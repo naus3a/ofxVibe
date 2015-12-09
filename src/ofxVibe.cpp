@@ -27,7 +27,7 @@ ofxVibe::~ofxVibe(){
 
 void ofxVibe::setup(int channels, int samples, int pixel_neighbor, int distance_threshold, int matching_threshold, int update_factor){
     samples_=samples;
-    channels_=channels;
+    channels_=1; //ONLY 1 CHAN FOR NOW
     pixel_neighbor_=pixel_neighbor;
     distance_threshold_=distance_threshold;
     matching_threshold_=matching_threshold;
@@ -144,13 +144,17 @@ cv::Mat& ofxVibe::getMask(){
     return mask_;
 }
 
+void ofxVibe::convertColorSpace(cv::Mat & inMat, cv::Mat & outMat){
+    if(inMat.channels()>1){
+        cv::cvtColor(inMat, outMat, CV_BGR2GRAY);
+    }else{
+        inMat=outMat.clone();
+    }
+}
+
 void ofxVibe::update1st(const cv::Mat &img){
     frame = img;
-    if(channels_==1){
-        cv::cvtColor(frame, frame, CV_BGR2GRAY);
-    }else{
-        cv::cvtColor(frame, frame, CV_BGR2HSV);
-    }
+    convertColorSpace(frame, frame);
     init_(frame);
     gray = frame.clone();
 }
@@ -160,11 +164,7 @@ void ofxVibe::updateInited(const cv::Mat &img){
     cv::Mat fg;
     frame.copyTo(fg, getMask());
     frame = img;
-    if(channels_==1){
-        cv::cvtColor(frame, gray, CV_BGR2GRAY);
-    }else{
-        cv::cvtColor(frame, gray, CV_BGR2HSV);
-    }
+    convertColorSpace(frame, gray);
     
     foreground = fg.clone();
 }

@@ -17,11 +17,14 @@ public:
     void setup(int channels = 1, int samples = 20, int pixel_neighbor = 1, int distance_threshold = 20, int matching_threshold = 3, int update_factor = 16);
     cv::Mat& getMask();
     
+    inline void setBackground(const cv::Mat& img){update1st(img);}
+    template<class T> inline void setBackground(ofBaseHasPixels_<T>& img){update1st(ofxCv::toCv(img));}
     void update(const cv::Mat& img);
     template<class T> inline void update(ofBaseHasPixels_<T>& img){update(ofxCv::toCv(img));}
     
     inline void drawCurrentFrame(float x, float y){ofxCv::drawMat(frame,x,y);}
     inline void drawForeground(float x, float y){ofxCv::drawMat(foreground,x,y);}
+    inline void drawMask(float x, float y){ofxCv::drawMat(getMask(),x,y);}
     
     inline cv::Mat getCvForeground(){return foreground;}
     inline ofPixels getOfForeground(){ofPixels pix; ofxCv::toOf(foreground, pix); return pix;}
@@ -34,6 +37,7 @@ protected:
     void update_(const cv::Mat& img);
     void update1st(const cv::Mat& img);
     void updateInited(const cv::Mat& img);
+    void convertColorSpace(cv::Mat & inMat, cv::Mat & outMat);
     
     int samples_;
     int channels_;

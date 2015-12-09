@@ -25,6 +25,7 @@ void ofApp::draw(){
     cam.draw(0, 0);
     vibe.drawCurrentFrame(320, 0);
     vibe.drawForeground(640,0);
+    vibe.drawMask(0, 240);
 }
 
 //--------------------------------------------------------------
