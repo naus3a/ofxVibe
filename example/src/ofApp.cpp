@@ -1,5 +1,6 @@
 #include "ofApp.h"
 
+#define NCOLORS 3
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -8,7 +9,7 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     
     cam.initGrabber(320,240);
-    vibe.setup(1,20,4,17,2,16);
+    vibe.setup(NCOLORS,20,4,17,2,16);
 }
 
 //--------------------------------------------------------------
@@ -16,7 +17,8 @@ void ofApp::update(){
     cam.update();
     
     if(cam.isFrameNew()){
-        vibe.update(cam);
+        cv::Mat cvFrame = ofxCv::toCv(cam);
+        vibe.update(cvFrame);
     }
 }
 

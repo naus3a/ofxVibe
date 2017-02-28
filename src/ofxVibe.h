@@ -37,7 +37,7 @@ protected:
     void update_(const cv::Mat& img);
     void update1st(const cv::Mat& img);
     void updateInited(const cv::Mat& img);
-    void convertColorSpace(cv::Mat & inMat, cv::Mat & outMat);
+    void adaptColorSpace(cv::Mat & inMat, cv::Mat & outMat);
     
     int samples_;
     int channels_;
@@ -51,7 +51,7 @@ protected:
     
     cv::Mat mask_;
     cv::Mat frame;
-    cv::Mat gray;
+    cv::Mat cvtFrame;
     cv::Mat foreground;
     
     unsigned int rng_[65535];
